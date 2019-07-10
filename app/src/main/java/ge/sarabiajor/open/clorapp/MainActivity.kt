@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -26,14 +25,7 @@ class MainActivity : AppCompatActivity() {
             toast("Ya está logueado")
         } else {
             //No está logueado, se tiene que pasar al activity:
-            startActivityForResult(
-                AuthUI.getInstance()
-                    .createSignInIntentBuilder()
-                    .setAvailableProviders(arrayListOf(
-                        AuthUI.IdpConfig.GoogleBuilder().build(),
-                        AuthUI.IdpConfig.EmailBuilder().build()
-                    )).build(),
-                RC_SIGN_IN)
+
         }
     }
 
