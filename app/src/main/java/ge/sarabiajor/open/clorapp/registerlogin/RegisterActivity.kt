@@ -59,31 +59,13 @@ class RegisterActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == 0 && resultCode == Activity.RESULT_OK && data != null){
-            //Ver y desplegar la imagen seleccionada..
-            Log.d(TAG,"La foto fue seleccionada")
-
             //Obtenemos la localización de la imagen:
             selectedPhotoUri = data.data
 
-            /*Con el uri, podemos tener acceso al archivo, en este caso una imagen,
-            * Entonces lo que se hace es pasarlo a bitmap:
-            * Se le pasa el conentResolver, que es una variable declarada en
-            * cada activity
-            */
             val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, selectedPhotoUri)
 
-
-            /*
-            Se comenta esto, porque se coloca un imageview encima
-            //Convertimos el bitmap a drawable:
-            val bitmapDrawable = BitmapDrawable(bitmap)
-
-            // Luego, ponemos esa imagen como fondo del boton:
-            select_photo_register.setBackgroundDrawable(bitmapDrawable)
-
-            En vez de colocar la imagen en el boton, se coloca ahora en el simageview
-            */
             selected_photo_imageview_register.setImageBitmap(bitmap)
+
             //Hacemos que el boton sea invisible
             select_photo_register.alpha = 0f
         }
@@ -92,13 +74,19 @@ class RegisterActivity : AppCompatActivity() {
     private fun performRegister(){
         val pass = edittext_password_register.text.toString()
         val retype = edittext_password_register_2.text.toString()
+        val email = edittext_email_register.text.toString()
+        val username = username_edittext_register.text.toString()
+
+        if(email.isEmpty() || pass.isEmpty() || username.isEmpty()){
+            toast("Debe ingresar email, username y contraseña")
+            return
+        }
 
         if(!pass.equals(retype)){
             toast("Las contraseñas no coinciden")
             edittext_password_register_2.text.clear()
+            edittext_password_register.text.clear()
         }
-
-        val email = edittext_email_register.text.toString()
 
         Log.d(TAG, "user: " + email + " pass: "+pass)
     }
