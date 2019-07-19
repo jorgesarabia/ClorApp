@@ -12,9 +12,10 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import ge.sarabiajor.open.clorapp.R
 import kotlinx.android.synthetic.main.activity_register.*
-
+import java.util.*
 
 
 class RegisterActivity : AppCompatActivity() {
@@ -90,8 +91,8 @@ class RegisterActivity : AppCompatActivity() {
 
         if(!pass.equals(retype)){
             toast("Las contraseñas no coinciden")
-            edittext_password_register_2.setTextColor(Color.parseColor("#FF0000"))
-            edittext_password_register.setTextColor(Color.parseColor("#FF0000"))
+            edittext_password_register_2.text.clear()
+            edittext_password_register.text.clear()
             return
         }
 
@@ -102,8 +103,7 @@ class RegisterActivity : AppCompatActivity() {
             .addOnCompleteListener {
                 if (!it.isSuccessful) return@addOnCompleteListener
                 Log.d("RegisterActivity", "Successfully created user")
-                //Hacemos tareas relacionadas al nuevo usuario creado:
-                //uploadImageToFirebaseStorage()
+                uploadImageToFirebaseStorage()
             }
             .addOnFailureListener {
                 var message = ""
@@ -119,5 +119,24 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         Log.d(TAG, "user: " + email + " pass: "+pass)
+    }
+
+    private fun uploadImageToFirebaseStorage(){
+        if( selectedPhotoUri == null )return
+        val filename = UUID.randomUUID().toString()
+        //Obtenemos la instancia del singleton de FirebaseStorage
+        val ref = FirebaseStorage.getInstance().getReference("/images/$filename")
+
+        ref.putFile(selectedPhotoUri!!)
+            .addOnSuccessListener {
+                Log.d(TAG, "Imagen subida de manera exitosa: ${it.metadata?.path}")
+                ref.downloadUrl.addOnSuccessListener {
+                    Log.d(TAG,"file Location: $it")
+                    //saveUserToFirebaseDatabase(it.toString())
+                }
+            }
+            .addOnFailureListener {
+                //Do some login stuff
+            }
     }
 }
