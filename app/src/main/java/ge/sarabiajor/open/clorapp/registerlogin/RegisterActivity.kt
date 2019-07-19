@@ -12,8 +12,11 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import ge.sarabiajor.open.clorapp.MainActivity
 import ge.sarabiajor.open.clorapp.R
+import ge.sarabiajor.open.clorapp.models.User
 import kotlinx.android.synthetic.main.activity_register.*
 import java.util.*
 
@@ -103,18 +106,26 @@ class RegisterActivity : AppCompatActivity() {
             .addOnCompleteListener {
                 if (!it.isSuccessful) return@addOnCompleteListener
                 Log.d("RegisterActivity", "Successfully created user")
-                uploadImageToFirebaseStorage()
+                if(selectedPhotoUri == null) {
+                    val r = FirebaseStorage.getInstance().getReference("/logo")
+                    r.child("icon512x512.png").downloadUrl.addOnSuccessListener {
+                        Log.d(TAG,"Se pudo conectar: ${it}")
+                        saveUserToFirebaseDatabase(it.toString())
+                    }
+                }else
+                    uploadImageToFirebaseStorage()
             }
             .addOnFailureListener {
-                var message = ""
                 Log.e(TAG,"Fallo la creacion: ${it.message}")
-                if(it.message.toString().contains("The email address is badly formatted.")){
+                var message = when(it.message.toString()){
+                    "The email address is badly formatted."-> "El email está mal formado."
+                    "The email address is already in use by another account."-> "El email ya está en uso."
+                    else -> it.message.toString()
+                }
+                if(message.contains("El email")){
                     edittext_email_register.setTextColor(Color.parseColor("#FF0000"))
-                    message += "El email está mal formado"
                 }
                 toast("Fallo a crear el usuario: $message")
-            }
-            .continueWith {
                 register_progressbar.visibility = View.INVISIBLE
             }
 
@@ -132,11 +143,39 @@ class RegisterActivity : AppCompatActivity() {
                 Log.d(TAG, "Imagen subida de manera exitosa: ${it.metadata?.path}")
                 ref.downloadUrl.addOnSuccessListener {
                     Log.d(TAG,"file Location: $it")
-                    //saveUserToFirebaseDatabase(it.toString())
+                    saveUserToFirebaseDatabase(it.toString())
                 }
             }
             .addOnFailureListener {
                 //Do some login stuff
+                Log.e(TAG,"No se pudo subir la imagen al Storage: ${it.message}")
+                register_progressbar.visibility = View.INVISIBLE
             }
     }
+
+    private fun saveUserToFirebaseDatabase(profileImageUrl: String){
+        //Se usa el elvis operator, para setear en caso de que sea null
+        val uid = FirebaseAuth.getInstance().uid ?: ""
+        val ref = FirebaseDatabase.getInstance().getReference("/users/$uid")
+        val user = User(
+            uid,
+            username_edittext_register.text.toString(),
+            profileImageUrl
+        )
+
+        ref.setValue(user)
+            .addOnSuccessListener {
+                Log.d(TAG,"Finalmente se guarda el usuario en Firebase Database")
+                //Aca tengo que ir para el 'Home'
+                val intent = Intent(this, MainActivity::class.java)
+                /*Con estas banderas se limpia la cola de activities y el que se abre es el primero en la lista*/
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            }
+            .addOnFailureListener {
+                Log.d(TAG,"No se pudo guardar en Firebase Database: ${it.message}")
+                register_progressbar.visibility = View.INVISIBLE
+            }
+    }
+
 }

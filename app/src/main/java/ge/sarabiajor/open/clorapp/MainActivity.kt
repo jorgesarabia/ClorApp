@@ -6,39 +6,32 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import ge.sarabiajor.open.clorapp.registerlogin.LoginActivity
 
 class MainActivity : AppCompatActivity() {
-    //Constantes
-    private val RC_SIGN_IN = 1
 
     //extension functions:
     fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        auth = FirebaseAuth.getInstance()
-        if (auth.getCurrentUser() != null) {
-            toast("Ya está logueado")
-        } else {
-            //No está logueado, se tiene que pasar al activity:
 
-        }
+        FirebaseAuth.getInstance().signOut()
+
+
+
+        //se va controlar si es que está logueado con el Firebase:
+        verifyUserIsLoggedIn()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        toast("HOLA")
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                toast("Se logueó")
-            } else if (resultCode == RESULT_CANCELED) {
-                toast("No se logueó")
-                finish()
-            }
+    private fun verifyUserIsLoggedIn(){
+        val uid = FirebaseAuth.getInstance().uid
+        if( uid == null ){
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
         }
     }
 

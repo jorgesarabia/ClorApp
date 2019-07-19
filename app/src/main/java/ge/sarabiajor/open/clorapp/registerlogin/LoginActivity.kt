@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
 import ge.sarabiajor.open.clorapp.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -29,9 +30,18 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun performLogin(){
+        val email = edittext_email_login.text.toString()
+        val pass = edittext_password_login.text.toString()
+
+        if(email.isEmpty() || pass.isEmpty()){
+
+        }
+
         val message = "Se va loguear usando:" + edittext_email_login.text.toString() +
                 " y " + edittext_password_login.text.toString()
 
         Log.d(TAG,message)
     }
+
+
 }
