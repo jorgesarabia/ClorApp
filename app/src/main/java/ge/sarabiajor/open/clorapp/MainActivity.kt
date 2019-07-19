@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import ge.sarabiajor.open.clorapp.registerlogin.LoginActivity
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,10 +18,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        FirebaseAuth.getInstance().signOut()
-
-
+        button_main.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            verifyUserIsLoggedIn()
+        }
 
         //se va controlar si es que está logueado con el Firebase:
         verifyUserIsLoggedIn()
@@ -34,6 +35,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 
 }
