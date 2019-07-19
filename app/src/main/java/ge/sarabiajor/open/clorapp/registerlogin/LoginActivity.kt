@@ -4,8 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
-import ge.sarabiajor.open.clorapp.MainActivity
 import ge.sarabiajor.open.clorapp.R
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -23,9 +21,9 @@ class LoginActivity : AppCompatActivity() {
             performLogin()
         }
 
-        textview_crear_cuenta_login.setOnClickListener {
+        textview_crearcuenta_login.setOnClickListener {
             Log.d(TAG,"Ir al Register")
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,RegisterActivity::class.java)
             startActivity(intent)
         }
     }
