@@ -3,12 +3,15 @@ package ge.sarabiajor.open.clorapp.registerlogin
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import ge.sarabiajor.open.clorapp.R
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -43,14 +46,12 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         select_photo_register.setOnClickListener {
-            /** Para seleccionar una foto de la galeria
-             * se necesita un startActivityForResult()
-             * Con un intent, que infla la galeria*/
-            Log.d(TAG,"Try to show photo selector")
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent,0)
         }
+
+        register_progressbar.visibility = View.INVISIBLE
     }
 
     var selectedPhotoUri: Uri? = null
@@ -82,11 +83,40 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
+        if(pass.length < 6){
+            toast("La contraseña debe tener al menos 6 caracteres")
+            return
+        }
+
         if(!pass.equals(retype)){
             toast("Las contraseñas no coinciden")
-            edittext_password_register_2.text.clear()
-            edittext_password_register.text.clear()
+            edittext_password_register_2.setTextColor(Color.parseColor("#FF0000"))
+            edittext_password_register.setTextColor(Color.parseColor("#FF0000"))
+            return
         }
+
+        register_progressbar.visibility = View.VISIBLE
+
+        //Crear un usuario con Firebase:
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, pass)
+            .addOnCompleteListener {
+                if (!it.isSuccessful) return@addOnCompleteListener
+                Log.d("RegisterActivity", "Successfully created user")
+                //Hacemos tareas relacionadas al nuevo usuario creado:
+                //uploadImageToFirebaseStorage()
+            }
+            .addOnFailureListener {
+                var message = ""
+                Log.e(TAG,"Fallo la creacion: ${it.message}")
+                if(it.message.toString().contains("The email address is badly formatted.")){
+                    edittext_email_register.setTextColor(Color.parseColor("#FF0000"))
+                    message += "El email está mal formado"
+                }
+                toast("Fallo a crear el usuario: $message")
+            }
+            .continueWith {
+                register_progressbar.visibility = View.INVISIBLE
+            }
 
         Log.d(TAG, "user: " + email + " pass: "+pass)
     }
