@@ -6,74 +6,74 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".registerlogin.LoginActivity"
-        android:background="@android:color/holo_red_dark">
+        android:background="@android:color/holo_red_dark" android:id="@+id/scrollview_login">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:focusableInTouchMode="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    <EditText
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:inputType="textPersonName"
-            android:ems="10"
-            android:background="@drawable/rounded_generic"
-            android:id="@+id/edittext_email_login"
-            android:paddingLeft="16dp"
-            android:hint="Email"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_login"
-            android:layout_marginTop="32dp"/>
-    <EditText
-            android:layout_width="299dp"
-            android:layout_height="50dp"
-            android:inputType="textPassword"
-            android:ems="10"
-            android:background="@drawable/rounded_generic"
-            android:paddingLeft="16dp"
-            android:id="@+id/edittext_password_login"
-            android:hint="Contraseña"
-            app:layout_constraintStart_toStartOf="@+id/edittext_email_login"
-            app:layout_constraintEnd_toEndOf="@+id/edittext_email_login"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_email_login"
-            android:layout_marginTop="16dp"/>
-    <Button
-            android:text="Ingresar "
-            android:layout_width="299dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_generic"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:id="@+id/button_login"
-            app:layout_constraintStart_toStartOf="@+id/edittext_password_login"
-            app:layout_constraintTop_toBottomOf="@+id/edittext_password_login"
-            app:layout_constraintEnd_toEndOf="@+id/edittext_password_login"
-            android:layout_marginTop="32dp"/>
-    <TextView
-            android:text="Crear una cuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textview_crearcuenta_login"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/button_login"
-            app:layout_constraintEnd_toEndOf="@+id/button_login"
-            app:layout_constraintTop_toBottomOf="@+id/button_login"
-            android:layout_marginTop="24dp"/>
-    <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="@android:color/white"
-            android:id="@+id/imageview_login"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="32dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:src="@drawable/icon"/>
+        <EditText
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:background="@drawable/rounded_generic"
+                android:id="@+id/edittext_email_login"
+                android:paddingLeft="16dp"
+                android:hint="Email"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageview_login"
+                android:layout_marginTop="32dp"/>
+        <EditText
+                android:layout_width="299dp"
+                android:layout_height="50dp"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:background="@drawable/rounded_generic"
+                android:paddingLeft="16dp"
+                android:id="@+id/edittext_password_login"
+                android:hint="Contraseña"
+                app:layout_constraintStart_toStartOf="@+id/edittext_email_login"
+                app:layout_constraintEnd_toEndOf="@+id/edittext_email_login"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_email_login"
+                android:layout_marginTop="16dp"/>
+        <Button
+                android:text="Ingresar "
+                android:layout_width="299dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_generic"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:id="@+id/button_login"
+                app:layout_constraintStart_toStartOf="@+id/edittext_password_login"
+                app:layout_constraintTop_toBottomOf="@+id/edittext_password_login"
+                app:layout_constraintEnd_toEndOf="@+id/edittext_password_login"
+                android:layout_marginTop="32dp"/>
+        <TextView
+                android:text="Crear una cuenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textview_crearcuenta_login"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/button_login"
+                app:layout_constraintEnd_toEndOf="@+id/button_login"
+                app:layout_constraintTop_toBottomOf="@+id/button_login"
+                android:layout_marginTop="24dp"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@android:color/white"
+                android:id="@+id/imageview_login"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="32dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/icon"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ScrollView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import ge.sarabiajor.open.clorapp.MainActivity
@@ -33,6 +34,12 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG,"Ir al Register")
             val intent = Intent(this,RegisterActivity::class.java)
             startActivity(intent)
+        }
+        edittext_password_login.setOnFocusChangeListener { v, hasFocus ->
+            Log.d(TAG,hasFocus.toString())
+            if(hasFocus){
+                scrollview_login.smoothScrollTo(0,200)
+            }
         }
     }
 

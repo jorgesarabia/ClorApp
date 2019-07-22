@@ -56,6 +56,21 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         register_progressbar.visibility = View.INVISIBLE
+        edittext_email_register.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                scrollview_register.smoothScrollTo(0,150)
+            }
+        }
+        edittext_password_register.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                scrollview_register.smoothScrollTo(0,250)
+            }
+        }
+        edittext_password_register_2.setOnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                scrollview_register.smoothScrollTo(0,350)
+            }
+        }
     }
 
     var selectedPhotoUri: Uri? = null
